@@ -14,7 +14,7 @@ export default function Home() {
 				Book Seat
 				<TbArmchair className={iconClasses} />
 			</Link>
-			<Link href="/view" className={menuClasses + 'bg-sky-500 hover:bg-sky-400 col-span-2'}>
+			<Link href="/map" className={menuClasses + 'bg-sky-500 hover:bg-sky-400 col-span-2'}>
 				View Seat
 				<PiMagnifyingGlassBold className={iconClasses} />
 			</Link>
