@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { PiMagnifyingGlassBold } from 'react-icons/pi'
 import { TbArmchair } from 'react-icons/tb'
+import { MdOutlineAccountCircle } from 'react-icons/md'
 import { LuLogIn, LuLogOut } from 'react-icons/lu'
 
 export default function Home() {
@@ -14,9 +15,13 @@ export default function Home() {
 				Book Seat
 				<TbArmchair className={iconClasses} />
 			</Link>
-			<Link href="/map" className={menuClasses + 'bg-sky-500 hover:bg-sky-400 col-span-2'}>
+			<Link href="/map" className={menuClasses + 'bg-sky-500 hover:bg-sky-400'}>
 				View Seat
 				<PiMagnifyingGlassBold className={iconClasses} />
+			</Link>
+			<Link href="/account" className={menuClasses + 'bg-gray-700 hover:bg-gray-600'}>
+				Account
+				<MdOutlineAccountCircle className={iconClasses} />
 			</Link>
 			<Link href="/checkin" className={menuClasses + 'bg-gray-700 hover:bg-gray-600'}>
 				Check In
