@@ -2,7 +2,6 @@ import Navbar from '@/components/Navbar'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { NextAuthProvider } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,12 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<NextAuthProvider>
-					<div className="h-screen flex flex-col min-w-max">
-						<Navbar />
-						<div className="grow">{children}</div>
-					</div>
-				</NextAuthProvider>
+				<div className="h-screen flex flex-col min-w-max">
+					<Navbar />
+					<div className="grow">{children}</div>
+				</div>
 			</body>
 		</html>
 	)

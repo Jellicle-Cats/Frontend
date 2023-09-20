@@ -1,39 +1,75 @@
 'use client'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { BiLogIn, BiLogOut } from 'react-icons/bi'
+import { BiLogOut } from 'react-icons/bi'
 import Link from 'next/link'
-import { useSession, signIn, signOut } from 'next-auth/react'
 import Image from 'next/image'
+import { getGoogleUrl } from '@/utils/getGoogleUrl'
+import { usePathname } from 'next/navigation'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 export default function Navbar() {
-	const { data, status } = useSession()
+	const from = usePathname()
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [user, setUser] = useState<any>()
+
+	const fetchUser = async () => {
+		setIsLoading(true)
+		try {
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/users/me`, {
+				withCredentials: true
+			})
+			setUser(response.data.data.user)
+		} catch (error) {
+			console.log(error)
+		}
+		setIsLoading(false)
+	}
+
+	const handleLogout = async () => {
+		setIsLoading(true)
+		try {
+			await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/logout`, {
+				withCredentials: true
+			})
+			setUser(null)
+		} catch (error) {
+			console.log(error)
+		}
+		setIsLoading(false)
+	}
+
+	useEffect(() => {
+		fetchUser()
+	}, [])
+
 	return (
 		<div className="h-[50px] bg-pink-500 border-t border-t-gray-400 flex items-center justify-between shadow-md text-white p-4">
 			<div>
 				<Link href="/">Welcome to Chulalongkorn University Central Library Booking</Link>
 			</div>
 			<div>
-				{status === 'loading' ? (
+				{isLoading ? (
 					<svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
 						<AiOutlineLoading3Quarters className="text-2xl" />
 					</svg>
-				) : status === 'authenticated' ? (
+				) : user ? (
 					<div className="flex items-center gap-2">
 						<Link
 							href="/account"
 							className="h-10 px-2 py-1 flex gap-2 items-center cursor-pointer hover:bg-pink-300 rounded-lg"
 						>
-							<div className="whitespace-nowrap">{data?.user?.name}</div>
+							<div className="whitespace-nowrap">{user.name}</div>
 							<Image
-								src={data?.user?.image || ''}
-								alt={data?.user?.name + ' photo'}
+								src={user.photo || ''}
+								alt={user.name + ' photo'}
 								width={30}
 								height={30}
 								className="rounded-full"
 							/>
 						</Link>
 						<button
-							onClick={() => signOut()}
+							onClick={() => handleLogout()}
 							className={
 								'h-10 px-2 py-1 rounded-lg font-bold text-white flex flex-row items-center text-center justify-center border-white border-2 bg-pink-500 hover:bg-pink-400'
 							}
@@ -43,15 +79,19 @@ export default function Navbar() {
 						</button>
 					</div>
 				) : (
-					<button
-						onClick={() => signIn('google')}
-						className={
-							'px-2 py-1 rounded-lg font-bold text-white flex flex-row items-center text-center justify-center w-full border-white border-2 hover:bg-pink-400'
-						}
+					<a
+						href={getGoogleUrl(from)}
+						className="h-10 px-2 py-1 rounded-lg font-bold text-white flex flex-row items-center text-center justify-center border-white border-2 bg-pink-500 hover:bg-pink-400"
 					>
-						Login
-						<BiLogIn className="text-xl" />
-					</button>
+						<Image
+							src={'/img/google.png'}
+							alt="google"
+							width={30}
+							height={30}
+							className="bg-white rounded-full p-1 mr-2"
+						/>
+						Login with Google
+					</a>
 				)}
 			</div>
 		</div>
