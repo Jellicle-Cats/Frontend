@@ -1,4 +1,6 @@
-import Link from "next/link";
+'use client'
+import { signIn, signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 export default function Register() {
 	return (
@@ -23,7 +25,7 @@ export default function Register() {
 				</div>
 				<button className="bg-pink-500 text-white rounded p-1 mt-2">Register</button>
 			</form>
-            <div className="ml-auto w-fit pt-1">
+			<div className="ml-auto w-fit pt-1">
 				<Link href="/login" className="text-pink-500 hover:underline">
 					Already have an account? Login here
 				</Link>
