@@ -23,7 +23,7 @@ export default function Navbar() {
 			setUser(response.data.data.user)
 		} catch (error) {
 			console.log(error)
-			alert(error)
+			// alert(error)
 		}
 		setIsLoading(false)
 	}

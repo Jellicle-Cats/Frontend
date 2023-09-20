@@ -15,7 +15,7 @@ export default function Account() {
 			setUser(response.data.data.user)
 		} catch (error) {
 			console.log(error)
-			alert(error)
+			// alert(error)
 		}
 	}
 
@@ -38,10 +38,11 @@ export default function Account() {
 						</div>
 
 						<Image
+							priority
 							src={user?.photo || ''}
 							alt={user?.name + ' photo'}
-							width={200}
-							height={200}
+							width={185}
+							height={185}
 							className="rounded-full shadow"
 						/>
 					</>
