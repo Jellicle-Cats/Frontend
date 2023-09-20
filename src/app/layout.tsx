@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className={inter.className}>
 				<div className="h-screen flex flex-col min-w-max">
 					<Navbar />
-					<div className="grow">{children}</div>
+					<div className="grow p-8">{children}</div>
 				</div>
 			</body>
 		</html>

@@ -6,13 +6,14 @@ import Image from 'next/image'
 import { getGoogleUrl } from '@/utils/getGoogleUrl'
 import { usePathname } from 'next/navigation'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Navbar() {
 	const from = usePathname()
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [user, setUser] = useState<any>()
-
+	const router = useRouter()
 	const fetchUser = async () => {
 		setIsLoading(true)
 		try {
@@ -22,6 +23,7 @@ export default function Navbar() {
 			setUser(response.data.data.user)
 		} catch (error) {
 			console.log(error)
+			alert(error)
 		}
 		setIsLoading(false)
 	}
@@ -33,8 +35,10 @@ export default function Navbar() {
 				withCredentials: true
 			})
 			setUser(null)
+			router.push('/')
 		} catch (error) {
 			console.log(error)
+			// alert(error)
 		}
 		setIsLoading(false)
 	}
@@ -44,7 +48,7 @@ export default function Navbar() {
 	}, [])
 
 	return (
-		<div className="h-[50px] bg-pink-500 border-t border-t-gray-400 flex items-center justify-between shadow-md text-white p-4">
+		<div className="h-[50px] bg-pink-500 border-t border-t-gray-400 flex items-center justify-between shadow-md text-white py-4 px-8">
 			<div>
 				<Link href="/">Welcome to Chulalongkorn University Central Library Booking</Link>
 			</div>

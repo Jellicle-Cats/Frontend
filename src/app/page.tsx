@@ -10,7 +10,7 @@ export default function Home() {
 	const iconClasses = 'text-5xl md:text-6xl lg:text-7xl lg:pt-1'
 
 	return (
-		<main className="flex flex-col sm:grid sm:grid-cols-3 sm:grid-rows-2 p-4 sm:p-12 gap-4 sm:gap-8 h-full text-xl sm:text-4xl md:text-5xl">
+		<main className="flex flex-col sm:grid sm:grid-cols-3 sm:grid-rows-2 gap-4 sm:gap-8 h-full text-xl sm:text-4xl md:text-5xl">
 			<Link href="/booking" className={menuClasses + 'bg-emerald-500 hover:bg-emerald-400 row-span-2'}>
 				Book Seat
 				<TbArmchair className={iconClasses} />
