@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { MdLocalLibrary } from 'react-icons/md'
 
 export default function Navbar() {
 	const from = usePathname()
@@ -48,9 +49,12 @@ export default function Navbar() {
 	}, [])
 
 	return (
-		<div className="h-[50px] bg-pink-500 border-t border-t-gray-400 flex items-center justify-between shadow-md text-white py-4 px-8">
+		<div className="h-[50px] bg-pink-500 border-t border-t-gray-400 flex items-center justify-between shadow-md text-white py-4 pl-6 pr-8">
 			<div>
-				<Link href="/">Welcome to Chulalongkorn University Central Library Booking</Link>
+				<Link href="/" className="flex gap-2 items-center hover:bg-pink-300 rounded-lg h-10 px-2 py-1">
+					<MdLocalLibrary className="text-3xl" />
+					Welcome to Chulalongkorn University Central Library Booking
+				</Link>
 			</div>
 			<div>
 				{isLoading ? (

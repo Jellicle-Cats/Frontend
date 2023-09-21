@@ -26,7 +26,7 @@ export default function Account() {
 	return (
 		<>
 			<div className="text-4xl font-bold text-pink-500">Account</div>
-			<div className="flex justify-between border-4 border-pink-500 rounded-lg p-6 shadow ">
+			<div className="flex justify-between border-4 border-pink-500 rounded-lg p-6 shadow text-lg">
 				{user ? (
 					<>
 						<div className="flex gap-4 flex-col">
@@ -41,8 +41,8 @@ export default function Account() {
 							priority
 							src={user?.photo || ''}
 							alt={user?.name + ' photo'}
-							width={185}
-							height={185}
+							width={205}
+							height={200}
 							className="rounded-full shadow"
 						/>
 					</>

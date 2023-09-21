@@ -16,7 +16,7 @@ export default function SeatMap() {
 	]
     
     return (
-        <div className="w-fit mx-auto border border-black">
+        <div className="w-fit mx-auto">
 				<TransformWrapper>
 					<TransformComponent>
 						<Image
