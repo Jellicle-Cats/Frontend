@@ -3,20 +3,13 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import { getGoogleUrl } from '@/utils/getGoogleUrl'
+import getMe from '../libs/getMe'
 
 export default function Account() {
 	const [user, setUser] = useState<any>()
 
 	const fetchUser = async () => {
-		try {
-			const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/users/me`, {
-				withCredentials: true
-			})
-			setUser(response.data.data.user)
-		} catch (error) {
-			console.log(error)
-			// alert(error)
-		}
+		setUser(await getMe())
 	}
 
 	useEffect(() => {

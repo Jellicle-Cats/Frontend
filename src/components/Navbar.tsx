@@ -9,6 +9,8 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { MdLocalLibrary } from 'react-icons/md'
+import getMe from '@/app/libs/getMe'
+import logout from '@/app/libs/logout'
 
 export default function Navbar() {
 	const from = usePathname()
@@ -17,30 +19,15 @@ export default function Navbar() {
 	const router = useRouter()
 	const fetchUser = async () => {
 		setIsLoading(true)
-		try {
-			const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/users/me`, {
-				withCredentials: true
-			})
-			setUser(response.data.data.user)
-		} catch (error) {
-			console.log(error)
-			// alert(error)
-		}
+		setUser(await getMe())
 		setIsLoading(false)
 	}
 
 	const handleLogout = async () => {
 		setIsLoading(true)
-		try {
-			await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/logout`, {
-				withCredentials: true
-			})
-			setUser(null)
-			router.push('/')
-		} catch (error) {
-			console.log(error)
-			// alert(error)
-		}
+		await logout()
+		router.push('/')
+		setUser(null)
 		setIsLoading(false)
 	}
 
