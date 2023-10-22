@@ -11,11 +11,7 @@ export default function Booking() {
 					Next
 				</Link>
 			</div>
-			<div className="flex flex-col justify-between border-4 border-pink-500 rounded-lg shadow mt-4">
-				<div className="w-fit mx-auto">
-					<SeatMap />
-				</div>
-			</div>
+			<SeatMap />
 		</>
 	)
 }
