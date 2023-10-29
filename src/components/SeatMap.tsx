@@ -6,7 +6,7 @@ import FloorButton from './FloorButton'
 import { useEffect, useState } from 'react'
 import getSeatsByFloor from '@/app/libs/getSeatsByFloor'
 
-export default function SeatMap() {
+export default function SeatMap({ mode }: { mode?: string }) {
 	const [selectedFloor, setSelectedFloor] = useState<string>('1')
 	const [seats, setSeats] = useState<any[]>([])
 
@@ -43,7 +43,7 @@ export default function SeatMap() {
 								alt="floor 1 map"
 							/>
 							{seats?.map(({ id, isOpen, top, left }) => (
-								<Seat top={top} left={left} isOpen={true} key={id} />
+								<Seat id={id} top={top} left={left} isOpen={isOpen} key={id} mode={mode} />
 							))}
 						</TransformComponent>
 					</TransformWrapper>

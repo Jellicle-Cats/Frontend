@@ -11,7 +11,7 @@ export default function Booking() {
 					Next
 				</Link>
 			</div>
-			<SeatMap />
+			<SeatMap mode="book" />
 		</>
 	)
 }
