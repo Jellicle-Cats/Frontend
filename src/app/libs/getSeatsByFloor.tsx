@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default async function getSeatsByFloor(floor: string) {
 	try {
-		const response = await axios.get(`http://localhost:3001/floor/${floor}`, {
+		const response = await axios.get(`${process.env.NEXT_PUBLIC_SEAT_SERVICE_ENDPOINT}/floor/${floor}`, {
 			withCredentials: true
 		})
 		console.log(response.data)
