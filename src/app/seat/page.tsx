@@ -14,7 +14,7 @@ export default function Seat() {
 
 	const fetchUser = async () => {
 		const response = await getMe()
-		if (response.role !== 'admin') {
+		if (response?.role !== 'admin') {
 			router.push('/')
 		}
 	}
