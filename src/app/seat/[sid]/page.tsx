@@ -1,9 +1,11 @@
 'use client'
+import deleteSeat from '@/app/libs/deleteSeat'
 import getMe from '@/app/libs/getMe'
 import getSeat from '@/app/libs/getSeat'
 import putSeat from '@/app/libs/putSeat'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { MdOutlineDeleteOutline } from 'react-icons/md'
 
 export default function Seat({ params }: { params: { sid: string } }) {
 	const [seat, setSeat] = useState<any>()
@@ -42,6 +44,19 @@ export default function Seat({ params }: { params: { sid: string } }) {
 		}
 	}
 
+	const handleDelete = async () => {
+		const confirmed = window.confirm(`Do you want to delete this seat?`)
+		if (confirmed) {
+			const response = await deleteSeat(seat.id)
+			if (response) {
+				alert('Deleted')
+				router.push('/map')
+			} else {
+				alert('Error')
+			}
+		}
+	}
+
 	if (!seat) {
 		return <>Loading...</>
 	}
@@ -49,6 +64,7 @@ export default function Seat({ params }: { params: { sid: string } }) {
 	return (
 		<>
 			<div className="text-4xl font-bold text-pink-500">Seat</div>
+
 			<form
 				className="flex justify-between border-4 border-pink-500 rounded-lg shadow flex-col p-6 text-lg gap-2"
 				onSubmit={(e) => onSave(e)}
@@ -130,6 +146,15 @@ export default function Seat({ params }: { params: { sid: string } }) {
 					Save
 				</button>
 			</form>
+			<button
+				className={
+					'h-10 pl-2 pr-1 py-1 mt-4 ml-auto rounded-lg font-bold text-pink-500 flex flex-row items-center text-center justify-center border-pink-500 border-2 hover:bg-pink-100'
+				}
+				onClick={handleDelete}
+			>
+				Delete seat
+				<MdOutlineDeleteOutline className="text-xl" />
+			</button>
 		</>
 	)
 }
