@@ -42,8 +42,8 @@ export default function SeatMap() {
 								className="min-w-[1000px]"
 								alt="floor 1 map"
 							/>
-							{seats.map(({ id, isOpen, top, left }) => (
-								<Seat top={top} left={left} isOpen={isOpen} key={id} />
+							{seats?.map(({ id, isOpen, top, left }) => (
+								<Seat top={top} left={left} isOpen={true} key={id} />
 							))}
 						</TransformComponent>
 					</TransformWrapper>
