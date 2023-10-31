@@ -19,17 +19,20 @@ export default function TimeRangeSelector({
 	const handleTimeChange = () => {
 		// Parse start and end times as Date objects for comparison
 		const startDate = new Date(`2000-01-01T${startTime}`);
-		const endDate = new Date(`2000-01-01T${endTime}`);
+		let endDate = new Date(`2000-01-01T${endTime}`);
 
-		// Check if end time is less than start time, and if so, adjust end time
-		if (endDate < startDate) {
-			endDate.setHours(startDate.getHours() + 1); // Add 1 hour to end time
+		// Calculate the minimum end time
+		const minimumEndTime = new Date(startDate);
+		minimumEndTime.setHours(minimumEndTime.getHours() + 1);
+
+		// Check if end time is less than the minimum end time
+		if (endDate < minimumEndTime) {
+			endDate = new Date(minimumEndTime);
 			setEndTime(endDate.toTimeString().slice(0, 5));
 
 			alert(
-				'End time cannot be before start time. End time has been adjusted.'
+				'End time must be at least 1 hour after the start time. End time has been adjusted.'
 			);
-			return;
 		}
 
 		onChange(startTime, endTime);
