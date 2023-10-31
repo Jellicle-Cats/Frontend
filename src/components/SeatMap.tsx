@@ -19,6 +19,8 @@ export default function SeatMap({
 	const [seats, setSeats] = useState<any[]>([]);
 
 	// add fetch by time
+	// need to handle if startTime less than current time that mean it's the next day
+	// lets say duration = 0 then its mean real time availability
 	useEffect(() => {
 		const fetchSeats = async () => {
 			const response = await getSeatsByFloor(selectedFloor);

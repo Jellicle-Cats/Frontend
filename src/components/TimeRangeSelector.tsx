@@ -32,7 +32,7 @@ export default function TimeRangeSelector({
 				type="number"
 				id="duration"
 				value={duration}
-				min={1} // Set the minimum duration to 1 hours
+				min={0} // Set the minimum duration to 0 hours
 				max={5} // Set the maximum duration to 5 hours
 				onChange={(e) => setDuration(Number(e.target.value))}
 			/>
