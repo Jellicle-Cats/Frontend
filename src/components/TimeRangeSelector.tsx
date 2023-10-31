@@ -1,43 +1,19 @@
-'use client';
-import React, { useState } from 'react';
+// TimeRangeSelector.tsx
+import React from 'react';
 
 interface TimeRangeSelectorProps {
 	startTime: string;
-	endTime: string;
-	onChange: (startTime: string, endTime: string) => void;
+	duration: number;
 	setStartTime: React.Dispatch<React.SetStateAction<string>>;
-	setEndTime: React.Dispatch<React.SetStateAction<string>>;
+	setDuration: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function TimeRangeSelector({
 	startTime,
-	endTime,
-	onChange,
+	duration,
 	setStartTime,
-	setEndTime,
+	setDuration,
 }: TimeRangeSelectorProps) {
-	const handleTimeChange = () => {
-		// Parse start and end times as Date objects for comparison
-		const startDate = new Date(`2000-01-01T${startTime}`);
-		let endDate = new Date(`2000-01-01T${endTime}`);
-
-		// Calculate the minimum end time
-		const minimumEndTime = new Date(startDate);
-		minimumEndTime.setHours(minimumEndTime.getHours() + 1);
-
-		// Check if end time is less than the minimum end time
-		if (endDate < minimumEndTime) {
-			endDate = new Date(minimumEndTime);
-			setEndTime(endDate.toTimeString().slice(0, 5));
-
-			alert(
-				'End time must be at least 1 hour after the start time. End time has been adjusted.'
-			);
-		}
-
-		onChange(startTime, endTime);
-	};
-
 	return (
 		<div>
 			<label htmlFor="startTime">Start Time:</label>
@@ -45,16 +21,21 @@ export default function TimeRangeSelector({
 				type="time"
 				id="startTime"
 				value={startTime}
+				min={new Date().toLocaleTimeString().slice(0, 5)} // Set the minimum value to now
+				max={new Date(Date.now() + 24 * 60 * 60 * 1000)
+					.toLocaleTimeString()
+					.slice(0, 5)} // Set the maximum value to now + 24 hours
 				onChange={(e) => setStartTime(e.target.value)}
 			/>
-			<label htmlFor="endTime">End Time:</label>
+			<label htmlFor="duration">Duration (in hours):</label>
 			<input
-				type="time"
-				id="endTime"
-				value={endTime}
-				onChange={(e) => setEndTime(e.target.value)}
+				type="number"
+				id="duration"
+				value={duration}
+				min={1} // Set the minimum duration to 1 hours
+				max={5} // Set the maximum duration to 5 hours
+				onChange={(e) => setDuration(Number(e.target.value))}
 			/>
-			<button onClick={handleTimeChange}>Apply</button>
 		</div>
 	);
 }

@@ -9,11 +9,11 @@ import getSeatsByFloor from '@/app/libs/getSeatsByFloor';
 export default function SeatMap({
 	mode,
 	startTime,
-	endTime,
+	duration,
 }: {
 	mode?: string;
-	startTime: string;
-	endTime: string;
+	startTime?: string;
+	duration?: number;
 }) {
 	const [selectedFloor, setSelectedFloor] = useState<string>('1');
 	const [seats, setSeats] = useState<any[]>([]);
@@ -25,7 +25,7 @@ export default function SeatMap({
 			setSeats(response);
 		};
 		fetchSeats();
-	}, [selectedFloor, startTime, endTime]);
+	}, [selectedFloor, startTime, duration]);
 
 	return (
 		<>
