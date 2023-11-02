@@ -4,12 +4,34 @@ import axios from 'axios'
 import Image from 'next/image'
 import { getGoogleUrl } from '@/utils/getGoogleUrl'
 import getMe from '../libs/getMe'
+import getUserHistory from '../libs/getUserHistory'
 
 export default function Account() {
 	const [user, setUser] = useState<any>()
+	const [bookingList,setBookingList] = useState<any>()
+	
+	const bookingStatusMapping: Record<any, string> = {
+		0: 'UNKNOWN',
+		1: 'BOOKED',
+		2: 'CHECKED_IN',
+		3: 'COMPLETED',
+		4: 'MISSED',
+	  };
+	const millisecondToDate = (timestamp: number): string => {
+		const date = new Date(timestamp);
+		const formattedDate = date.toLocaleString("en-GB", {
+		  timeZone: "Asia/Bangkok", // Set the desired time zone, e.g., UTC+7 (Asia/Bangkok)
+		  hour12: false, // Display time in 24-hour format
+		});
+		return formattedDate;
+	};
 
 	const fetchUser = async () => {
-		setUser(await getMe())
+		const getUser = await getMe()
+		setUser(getUser)
+		if (getUser){
+			setBookingList(await getUserHistory(getUser.userId))
+		}
 	}
 
 	useEffect(() => {
@@ -18,6 +40,7 @@ export default function Account() {
 
 	return (
 		<>
+		<div className='space-y-5'>
 			<div className="text-4xl font-bold text-pink-500">Account</div>
 			<div className="flex justify-between border-4 border-pink-500 rounded-lg p-6 shadow text-lg">
 				{user ? (
@@ -55,6 +78,53 @@ export default function Account() {
 					</a>
 				)}
 			</div>
+			<div className='text-3xl font-bold text-pink-500'>Booking History</div>	
+			<div className="relative overflow-x-auto">
+   			 	<table className="w-full text-lg text-left  text-pink-500">
+        			<thead className="text-lg text-white uppercase bg-pink-500">
+            			<tr>
+                			<th scope="col" className="px-6 py-3">
+                    		Starting Time
+                			</th>
+                			<th scope="col" className="px-6 py-3">
+                    		Ending Time
+                			</th>
+                			<th scope="col" className="px-6 py-3">
+                    		Seat ID
+                			</th>
+                			<th scope="col" className="px-6 py-3">
+                    		Status
+                			</th>
+            			</tr>
+        			</thead>
+					<tbody>
+            			{bookingList
+                		? bookingList
+							.sort((a:any, b:any) => b.bookingData.bookingTime.startTime - a.bookingData.bookingTime.startTime)
+							.map((bookingItem:any, index:number) => (
+                    			<tr key={index} className="bg-gray-200 border-b-2 border-gray-300">
+                        			<td className="px-6 py-4 font-normal">
+                            		{millisecondToDate(bookingItem.bookingData.bookingTime.startTime)}
+                        			</td>
+                        			<td className="px-6 py-4">
+                            		{millisecondToDate(bookingItem.bookingData.bookingTime.endTime)}
+                        			</td>
+                        			<td className="px-6 py-4">
+                            		{bookingItem.bookingData.seat.seatId}
+                        			</td>
+                        			<td className="px-6 py-4">
+                            		{bookingStatusMapping[bookingItem.bookingData.status]}
+                        			</td>
+                    			</tr>
+                			))
+                		: <tr>
+                    		<td colSpan={4}>No booking data available.</td>
+                		</tr>
+        			    }
+        			</tbody>
+    			</table>
+			</div>
+		</div>
 		</>
 	)
 }
