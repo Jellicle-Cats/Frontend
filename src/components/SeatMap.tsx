@@ -5,6 +5,23 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import FloorButton from './FloorButton';
 import { useEffect, useState } from 'react';
 import getSeatsByFloor from '@/app/libs/getSeatsByFloor';
+import getUnavailableSeats from '@/app/libs/getUnavailableSeat';
+
+function getTimeForToday(time: string): Date {
+	// Validate the time format with a simple regex
+	const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+	if (!timePattern.test(time)) {
+		throw new Error("Invalid time format. It should be HH:mm");
+	}
+
+	const [hours, minutes] = time.split(":").map(Number);
+
+	const date = new Date();
+	date.setHours(hours, minutes, 0, 0);  // Set hours, minutes, and reset seconds and milliseconds
+
+	return date;
+}
 
 export default function SeatMap({
 	mode,
@@ -23,8 +40,31 @@ export default function SeatMap({
 	// lets say duration = 0 then its mean real time availability
 	useEffect(() => {
 		const fetchSeats = async () => {
-			const response = await getSeatsByFloor(selectedFloor);
-			setSeats(response);
+			const seats = await getSeatsByFloor(selectedFloor);
+			if (startTime != null && duration != null) {
+				const start = getTimeForToday(startTime);
+				const end = start;
+				end.setHours(start.getHours() + duration);
+
+				const unavailableSeatsStream = getUnavailableSeats(start.getTime() * 1000, end.getTime() * 1000);
+				unavailableSeatsStream.on('data', (seats) => {
+					console.log(seats);
+					const unavailableSeat = new Set(seats.getSeatsList());
+					setSeats((prevSeats) => prevSeats.map((seat) => ({
+						...seat,
+						isOccupied: unavailableSeat.has(seat.id),
+					})))
+				});
+
+				unavailableSeatsStream.on("status", function (status) {
+					console.log(status.code, status.details, status.metadata);
+				});
+
+				unavailableSeatsStream.on("end", () => {
+					console.log("Stream ended.");
+				});
+			}
+			setSeats(seats);
 		};
 		fetchSeats();
 	}, [selectedFloor, startTime, duration]);
@@ -89,12 +129,13 @@ export default function SeatMap({
 								className="min-w-[1000px]"
 								alt="floor 1 map"
 							/>
-							{seats?.map(({ id, isOpen, top, left }) => (
+							{seats?.map(({ id, isOpen, isOccupied, top, left }) => (
 								<Seat
 									id={id}
 									top={top}
 									left={left}
 									isOpen={isOpen}
+									isOccupied={isOccupied}
 									key={id}
 									mode={mode}
 								/>

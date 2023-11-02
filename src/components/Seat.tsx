@@ -5,12 +5,14 @@ export default function Seat({
 	top,
 	left,
 	isOpen,
+	isOccupied,
 	mode
 }: {
 	id: number
 	top: number
 	left: number
 	isOpen: boolean
+	isOccupied: boolean
 	mode?: string
 }) {
 	const router = useRouter()
@@ -20,7 +22,7 @@ export default function Seat({
 			router.push(`/seat/${id}`)
 		}
 	}
-	if (!isOpen) {
+	if (!isOpen || isOccupied) {
 		return (
 			<div
 				className={`w-3 h-3 rounded bg-gray-500 absolute opacity-90 ${
