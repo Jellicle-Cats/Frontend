@@ -15,21 +15,13 @@ export default function Home() {
 				Book Seat
 				<TbArmchair className={iconClasses} />
 			</Link>
-			<Link href="/map" className={menuClasses + 'bg-sky-500 hover:bg-sky-400'}>
+			<Link href="/map" className={menuClasses + 'bg-sky-500 hover:bg-sky-400 row-span-2'}>
 				View Seat
 				<PiMagnifyingGlassBold className={iconClasses} />
 			</Link>
-			<Link href="/account" className={menuClasses + 'bg-gray-700 hover:bg-gray-600'}>
+			<Link href="/account" className={menuClasses + 'bg-gray-700 hover:bg-gray-600 row-span-2'}>
 				Account
 				<MdOutlineAccountCircle className={iconClasses} />
-			</Link>
-			<Link href="/checkin" className={menuClasses + 'bg-gray-700 hover:bg-gray-600'}>
-				Check In
-				<LuLogIn className={iconClasses} />
-			</Link>
-			<Link href="/checkout" className={menuClasses + 'bg-gray-700 hover:bg-gray-600'}>
-				Check Out
-				<LuLogOut className={iconClasses} />
 			</Link>
 		</main>
 	)
