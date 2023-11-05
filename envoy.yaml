@@ -61,4 +61,4 @@ static_resources:
                     socket_address:
                       address: host.docker.internal
                       port_value: 9080
-                      protoc -I=. src/proto/booking.proto --js_out=import_style=commonjs,binary:. --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. --plugin=/usr/local/bin/protoc-gen-grpc-web/bin
+                      # protoc -I=. src/proto/booking.proto --js_out=import_style=commonjs,binary:. --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. --plugin=/usr/local/bin/protoc-gen-grpc-web/bin
