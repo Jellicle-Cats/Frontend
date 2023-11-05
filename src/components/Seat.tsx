@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import { BsCheckLg } from 'react-icons/Bs'
 
 export default function Seat({
 	id,
@@ -6,7 +7,9 @@ export default function Seat({
 	left,
 	isOpen,
 	isOccupied,
-	mode
+	mode,
+	selectedSeat,
+	setSelectdSeat
 }: {
 	id: number
 	top: number
@@ -14,6 +17,8 @@ export default function Seat({
 	isOpen: boolean
 	isOccupied: boolean
 	mode?: string
+	selectedSeat?: number
+	setSelectdSeat?: Function
 }) {
 	const router = useRouter()
 
@@ -21,25 +26,32 @@ export default function Seat({
 		if (mode == 'setting') {
 			router.push(`/seat/${id}`)
 		}
+		if (setSelectdSeat) {
+			setSelectdSeat(id)
+		}
 	}
-	if (!isOpen || isOccupied) {
-		return (
-			<div
-				className={`w-3 h-3 rounded bg-gray-500 absolute opacity-90 ${
-					mode === 'setting' && 'hover:bg-gray-400 hover:border-2 border-gray-700'
-				}`}
-				style={{ top: `${top}px`, left: `${left}px` }}
-				onClick={handleClick}
-			></div>
-		)
+
+	const getClassName = () => {
+		let className = 'w-3 h-3 rounded absolute opacity-90 '
+		if (!isOpen || isOccupied) {
+			className += 'bg-gray-500 '
+			if (mode === 'setting') {
+				className += 'hover:bg-gray-400 hover:outline outline-gray-700 '
+			}
+		} else if (selectedSeat === id) {
+			className += 'bg-pink-500 outline outline-pink-700'
+		} else {
+			className += 'bg-emerald-500 '
+			if (mode === 'setting' || mode === 'book') {
+				className += 'hover:bg-emerald-400 hover:outline outline-emerald-700 '
+			}
+		}
+		return className
 	}
+
 	return (
-		<div
-			className={`w-3 h-3 rounded bg-emerald-500 absolute opacity-90 ${
-				(mode === 'setting' || mode === 'book') && 'hover:bg-emerald-400 hover:border-2 border-emerald-700'
-			}`}
-			style={{ top: `${top}px`, left: `${left}px` }}
-			onClick={handleClick}
-		></div>
+		<div className={getClassName()} style={{ top: `${top}px`, left: `${left}px` }} onClick={handleClick}>
+			{selectedSeat === id && <BsCheckLg className="text-white text-xs" />}
+		</div>
 	)
 }

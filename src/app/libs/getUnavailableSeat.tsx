@@ -15,7 +15,6 @@ export default function getUnavailableSeats(startTime: number, endTime: number) 
             // Extract the seatId values and return as an array of numbers
             const seatIds = response.getSeatsList().map(seat => seat.getSeatid());
             console.log('Unavailable seat IDs:', seatIds);
-
         }
     });
 
