@@ -10,7 +10,7 @@ interface TimeRangeSelectorProps {
 
 export default function TimeRangeSelector({ startTime, duration, setStartTime, setDuration }: TimeRangeSelectorProps) {
 	return (
-		<div className='my-4'>
+		<div className="my-4">
 			<label htmlFor="startTime">Start Time:</label>
 			<input
 				className="border-2 border-pink-500 mx-2 rounded p-1 bg-pink-50"

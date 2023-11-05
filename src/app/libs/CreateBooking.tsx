@@ -1,7 +1,7 @@
 import bookingClient from '../../grpc/booking-client'
 import { BookingRequest, BookingTime, Seat, UserId } from '../../proto/booking_pb'
 
-export default function CreateBooking(user: UserId, bookingTime: BookingTime, seat: Seat) {
+export default function createBooking(user: UserId, bookingTime: BookingTime, seat: Seat) {
 	const request = new BookingRequest()
 	request.setUser(user)
 	request.setBookingtime(bookingTime)

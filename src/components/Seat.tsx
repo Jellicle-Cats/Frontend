@@ -26,7 +26,7 @@ export default function Seat({
 		if (mode == 'setting') {
 			router.push(`/seat/${id}`)
 		}
-		if (setSelectdSeat) {
+		if (!isOccupied && setSelectdSeat) {
 			setSelectdSeat(id)
 		}
 	}

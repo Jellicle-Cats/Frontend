@@ -35,7 +35,7 @@ export default function SeatMap({
 				const end = getTimeForToday(startTime)
 				end.setHours(start.getHours() + duration)
 
-				const unavailableSeatsStream = getUnavailableSeats(start.getTime() * 1000, end.getTime() * 1000, (seats) => {
+				const unavailableSeatsStream = getUnavailableSeats(start.getTime() / 1000, end.getTime() / 1000, (seats) => {
 					const unavailableSeat = new Set(seats);
 					setSeats((prevSeats) => prevSeats.map((seat) => ({
 						...seat,
