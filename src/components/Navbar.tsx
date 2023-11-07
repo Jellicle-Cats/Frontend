@@ -39,7 +39,7 @@ export default function Navbar() {
 			<div>
 				<Link href="/" className="flex gap-2 items-center hover:bg-pink-300 rounded-lg h-10 px-2 py-1">
 					<MdLocalLibrary className="text-3xl" />
-					Welcome to Chulalongkorn University Central Library Booking
+					<div className="hidden md:block">Welcome to Chulalongkorn University Central Library Booking</div>
 				</Link>
 			</div>
 			<div>
@@ -82,9 +82,9 @@ export default function Navbar() {
 							alt="google"
 							width={30}
 							height={30}
-							className="bg-white rounded-full p-1 mr-2"
+							className="bg-white rounded-full p-1 sm:mr-2"
 						/>
-						Login with Google
+						<div className="hidden sm:block">Login with Google</div>
 					</a>
 				)}
 			</div>
