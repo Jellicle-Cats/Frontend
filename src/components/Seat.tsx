@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import { BsCheckLg } from 'react-icons/Bs'
+import { BiCheck } from 'react-icons/bi'
 
 export default function Seat({
 	id,
@@ -51,7 +51,7 @@ export default function Seat({
 
 	return (
 		<div className={getClassName()} style={{ top: `${top}px`, left: `${left}px` }} onClick={handleClick}>
-			{selectedSeat === id && <BsCheckLg className="text-white text-xs" />}
+			{selectedSeat === id && <BiCheck className="text-white text-xs" />}
 		</div>
 	)
 }

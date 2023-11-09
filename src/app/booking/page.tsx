@@ -7,7 +7,7 @@ import { getGoogleUrl } from '@/utils/getGoogleUrl'
 import { usePathname, useRouter } from 'next/navigation'
 import { BookingTime, Seat, UserId } from '@/proto/booking_pb'
 import getTimeForToday from '@/utils/getTimeForToday'
-import createBooking from '../libs/CreateBooking'
+import createBooking from '../libs/createBooking'
 
 export default function Booking() {
 	const now = new Date()
