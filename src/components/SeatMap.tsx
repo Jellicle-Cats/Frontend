@@ -66,7 +66,7 @@ export default function SeatMap({
 	// lets say duration = 0 then its mean real time availability
 	useEffect(() => {
 		fetchSeats()
-		const interval = setInterval(fetchSeats, 300000)
+		const interval = setInterval(fetchSeats, 5000)
 		return () => clearInterval(interval)
 
 	}, [selectedFloor, startTime, duration])

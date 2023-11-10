@@ -3,8 +3,8 @@ import { BookingTime } from '../../proto/booking_pb'
 
 export default function getUnavailableSeats(startTime: number, endTime: number, onData: (seats: number[]) => void) {
 	const request = new BookingTime()
-	request.setStarttime(startTime)
-	request.setEndtime(endTime)
+	request.setStarttime(Math.round(startTime))
+	request.setEndtime(Math.round(endTime))
 	console.log(startTime)
 	console.log(request)
 
