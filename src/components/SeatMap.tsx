@@ -24,46 +24,51 @@ export default function SeatMap({
 	const [selectedFloor, setSelectedFloor] = useState<string>('1')
 	const [seats, setSeats] = useState<any[]>([])
 
+	const fetchSeats = async () => {
+		const seats = await getSeatsByFloor(selectedFloor)
+		const start = startTime != null ? getTimeForToday(startTime) : new Date()
+		const end = startTime != null ? getTimeForToday(startTime) : new Date()
+		if (duration != null) {
+			end.setHours(start.getHours() + duration)
+		}
+
+		setSeats(seats)
+
+		const unavailableSeatsStream = getUnavailableSeats(
+			start.getTime() / 1000,
+			end.getTime() / 1000,
+			(seats) => {
+				const unavailableSeat = new Set(seats)
+				setSeats((prevSeats) =>
+					prevSeats.map((seat) => ({
+						...seat,
+						isOccupied: unavailableSeat.has(seat.id)
+					}))
+				)
+			}
+		)
+
+		unavailableSeatsStream.on('error', (err) => {
+			console.log('on error', err)
+		})
+
+		unavailableSeatsStream.on('status', function (status) {
+			console.log('on status', status.code, status.details, status.metadata)
+		})
+
+		unavailableSeatsStream.on('end', () => {
+			console.log('Stream ended.')
+		})
+	}
+
 	// add fetch by time
 	// need to handle if startTime less than current time that mean it's the next day
 	// lets say duration = 0 then its mean real time availability
 	useEffect(() => {
-		const fetchSeats = async () => {
-			const seats = await getSeatsByFloor(selectedFloor)
-			if (startTime != null && duration != null) {
-				const start = getTimeForToday(startTime)
-				const end = getTimeForToday(startTime)
-				end.setHours(start.getHours() + duration)
-
-				const unavailableSeatsStream = getUnavailableSeats(
-					start.getTime() / 1000,
-					end.getTime() / 1000,
-					(seats) => {
-						const unavailableSeat = new Set(seats)
-						setSeats((prevSeats) =>
-							prevSeats.map((seat) => ({
-								...seat,
-								isOccupied: unavailableSeat.has(seat.id)
-							}))
-						)
-					}
-				)
-
-				unavailableSeatsStream.on('error', (err) => {
-					console.log('on error', err)
-				})
-
-				unavailableSeatsStream.on('status', function (status) {
-					console.log('on status', status.code, status.details, status.metadata)
-				})
-
-				unavailableSeatsStream.on('end', () => {
-					console.log('Stream ended.')
-				})
-			}
-			setSeats(seats)
-		}
 		fetchSeats()
+		const interval = setInterval(fetchSeats, 300000)
+		return () => clearInterval(interval)
+
 	}, [selectedFloor, startTime, duration])
 
 	return (
