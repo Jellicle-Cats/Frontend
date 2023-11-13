@@ -46,9 +46,7 @@ export default function Booking() {
 		bookingTime.setEndtime(end.getTime() / 1000)
 		const seat = new Seat()
 		seat.setSeatid(selectedSeat)
-		createBooking(userId, bookingTime, seat)
-		alert('Booking Created')
-		router.push('/account')
+		createBooking(userId, bookingTime, seat, router)
 	}
 
 	return (

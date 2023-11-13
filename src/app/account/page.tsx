@@ -6,8 +6,10 @@ import { getGoogleUrl } from '@/utils/getGoogleUrl'
 import getMe from '../libs/getMe'
 import getUserHistory from '../libs/getUserHistory'
 import { LuLogIn, LuLogOut } from 'react-icons/lu'
+import { TiCancel } from 'react-icons/ti'
 import checkIn from '../libs/checkIn'
 import checkOut from '../libs/checkOut'
+import deleteBooking from '../libs/deleteBooking'
 
 export default function Account() {
 	const [user, setUser] = useState<any>()
@@ -40,6 +42,14 @@ export default function Account() {
 	useEffect(() => {
 		fetchUser()
 	}, [])
+
+	const handleDelete = (bookingId: number) => {
+		const confirmed = window.confirm(`Do you want to cancel this booking?`)
+		if (confirmed) {
+			deleteBooking(bookingId)
+			fetchUser()
+		}
+	}
 
 	return (
 		<>
@@ -101,6 +111,9 @@ export default function Account() {
 								<th scope="col" className="px-6 py-3">
 									Action
 								</th>
+								<th scope="col" className="px-6 py-3">
+									Cancel
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -123,29 +136,48 @@ export default function Account() {
 												{bookingStatusMapping[bookingItem.bookingData.status]}
 											</td>
 											<td className="px-6 py-2">
-												{bookingStatusMapping[bookingItem.bookingData.status] === 'BOOKED' && (
+												{bookingItem.bookingData.bookingTime.startTime < new Date().getTime() &&
+													new Date().getTime() <
+														bookingItem.bookingData.bookingTime.endTime &&
+													bookingStatusMapping[bookingItem.bookingData.status] ===
+														'BOOKED' && (
+														<button
+															className="w-[145px] h-[40px] justify-center flex items-center gap-1 bg-white rounded-lg text-pink-500 border-2 border-pink-500 font-bold px-2 py-1 hover:bg-pink-100"
+															onClick={() => {
+																checkIn(user.userId, bookingItem.id.id)
+																fetchUser()
+															}}
+														>
+															Check In
+															<LuLogIn />
+														</button>
+													)}
+												{bookingItem.bookingData.bookingTime.startTime < new Date().getTime() &&
+													new Date().getTime() <
+														bookingItem.bookingData.bookingTime.endTime &&
+													bookingStatusMapping[bookingItem.bookingData.status] ===
+														'CHECKED_IN' && (
+														<button
+															className="w-[145px] h-[40px] justify-center flex items-center gap-1 bg-white rounded-lg text-pink-500 border-2 border-pink-500 font-bold px-2 py-1 hover:bg-pink-100"
+															onClick={() => {
+																checkOut(user.userId, bookingItem.id.id)
+																fetchUser()
+															}}
+														>
+															Check Out
+															<LuLogOut />
+														</button>
+													)}
+											</td>
+											<td className="px-6 py-2">
+												{new Date().getTime() < bookingItem.bookingData.bookingTime.endTime && (
 													<button
-														className="w-[145px] justify-center flex items-center gap-1 bg-white rounded-lg text-pink-500 border-2 border-pink-500 font-bold px-2 py-1 hover:bg-pink-100"
+														className="w-fit h-[40px] justify-center flex items-center gap-1 bg-pink-500 rounded-lg text-pink-500 font-bold px-2 py-1 hover:bg-pink-400"
 														onClick={() => {
-															checkIn(user.userId, bookingItem.id.id)
-															fetchUser()
+															handleDelete(bookingItem.id.id)
 														}}
 													>
-														Check In
-														<LuLogIn />
-													</button>
-												)}
-												{bookingStatusMapping[bookingItem.bookingData.status] ===
-													'CHECKED_IN' && (
-													<button
-														className="w-[145px] justify-center flex items-center gap-1 bg-white rounded-lg text-pink-500 border-2 border-pink-500 font-bold px-2 py-1 hover:bg-pink-100"
-														onClick={() => {
-															checkOut(user.userId, bookingItem.id.id)
-															fetchUser()
-														}}
-													>
-														Check Out
-														<LuLogOut />
+														<TiCancel className="text-white text-2xl" />
 													</button>
 												)}
 											</td>
