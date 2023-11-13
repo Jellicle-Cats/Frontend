@@ -58,15 +58,9 @@ export default function Booking() {
 				duration={duration}
 				setStartTime={setStartTime}
 				setDuration={setDuration}
+				selectedSeat={selectedSeat}
+				handleCreateBooking={handleCreateBooking}
 			/>
-			{!!selectedSeat && (
-				<button
-					className="w-full bg-pink-500 text-white rounded py-2 px-4 mt-2 mb-4 ml-auto hover-bg-pink-400 text-2xl font-semibold hover:bg-pink-400"
-					onClick={() => handleCreateBooking()}
-				>
-					Book
-				</button>
-			)}
 			<SeatMap
 				mode="book"
 				startTime={startTime}
